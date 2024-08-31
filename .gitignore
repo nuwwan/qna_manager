@@ -7,3 +7,6 @@ moderator/app/.coverage
 
 # gateway app
 gateway/node_modules
+
+# qna app
+qna_engine/node_modules
