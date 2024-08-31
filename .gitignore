@@ -1,2 +1,9 @@
+# moderator app
 venv
+__pycache__/
+*.pyc
+*.sqlite3
+moderator/app/.coverage
+
+# gateway app
 gateway/node_modules
