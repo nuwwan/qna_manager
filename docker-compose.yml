@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  gateway:
+    build: 
+      context: ./gateway
+    ports:
+      - 8000:8000
+
+  moderator:
+    build: 
+      context: ./moderator
+    ports:
+      - 8001:8001
+    depends_on:
+      - moderator_db
+    environment:
+      - DATABASE_NAME=moderator_db
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=password
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5430
+
+  qna_admin:
+    build:
+      context: ./qna_admin
+    ports:
+      - 8002:8002
+    depends_on:
+      - qna_admin_db
+    environment:
+      - DATABASE_NAME=qna_admin_db
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=password
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5431
+
+  qna_engine:
+    build: 
+      - context: ./qna_engine
+    ports:
+      - 8003:8003
+    depends_on:
+      - qna_engine_db
+    environment:
+      - MONGO_URL=mongodb://qna_engine_db:27017/mydatabase
+
+  qna_engine_db:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+
+  qna_admin_db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=qna_admin_db
+    volumes:
+      - pg_data2:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
+
+  moderator_db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=moderator_db
+    volumes:
+      - pg_data1:/var/lib/postgresql/data
+    ports:
+      - "5430:5432"
+  
+  volumes:
+    - pg_data1
+    - pg_data2
+    - mongo_data
+
