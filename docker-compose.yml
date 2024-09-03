@@ -37,7 +37,7 @@ services:
 
   qna_engine:
     build: 
-      - context: ./qna_engine
+      context: ./qna_engine
     ports:
       - 8003:8003
     depends_on:
@@ -75,8 +75,8 @@ services:
     ports:
       - "5430:5432"
   
-  volumes:
-    - pg_data1
-    - pg_data2
-    - mongo_data
+volumes:
+  pg_data1:
+  pg_data2:
+  mongo_data:
 
